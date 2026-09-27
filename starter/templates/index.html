@@ -1,18 +1,62 @@
 <!doctype html>
-<html>
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sudoku Game</title>
+  <script src="/static/theme.js"></script>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <h1>Sudoku Game</h1>
-  <div id="sudoku-board"></div>
-  <div class="controls">
-    <button id="new-game">New Game</button>
-    <button id="check-solution">Check Solution</button>
-    <span id="message"></span>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="heading-row">
+        <h1>Sudoku Game</h1>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+      </div>
+      <div class="game-meta">
+        <div class="timer-display">
+          <span>Time</span>
+          <time id="timer" role="timer" aria-label="Elapsed time" aria-live="off">00:00</time>
+        </div>
+        <div class="player-field">
+          <label for="player-name">Player</label>
+          <input id="player-name" name="player-name" type="text" maxlength="32" autocomplete="nickname" value="Player">
+        </div>
+      </div>
+    </header>
+    <main>
+      <div id="sudoku-board" role="group" aria-label="Sudoku puzzle"></div>
+      <div class="controls" role="group" aria-label="Puzzle controls">
+        <div class="difficulty-field">
+          <label for="difficulty">Difficulty</label>
+          <select id="difficulty" name="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <button id="new-game" type="button">New Game</button>
+        <button id="check-solution" type="button">Check Puzzle</button>
+        <button id="hint" type="button">Hint</button>
+        <span id="hint-count" aria-live="polite">Hints used: 0</span>
+        <span id="message" role="status" aria-live="polite" aria-atomic="true"></span>
+      </div>
+      <section class="leaderboard" aria-labelledby="leaderboard-title">
+        <h2 id="leaderboard-title">Top 10 Fastest Games</h2>
+        <p id="leaderboard-empty">No completed games yet.</p>
+        <div class="leaderboard-table-wrap">
+          <table>
+            <thead>
+              <tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">Time</th><th scope="col">Difficulty</th><th scope="col">Hints</th></tr>
+            </thead>
+            <tbody id="leaderboard-scores"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
   </div>
+  <script src="/static/leaderboard.js"></script>
   <script src="/static/main.js"></script>
 </body>
 </html>

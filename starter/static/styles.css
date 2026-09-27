@@ -1,85 +1,411 @@
+:root {
+    color-scheme: light;
+    --page: #f1f5f1;
+    --surface: #ffffff;
+    --surface-muted: #e9f0eb;
+    --box-shade: #f4f7f4;
+    --text: #1c2a22;
+    --muted: #506258;
+    --line: #9aa99f;
+    --line-strong: #34483b;
+    --accent: #145c49;
+    --accent-hover: #0e4939;
+    --accent-text: #ffffff;
+    --player-entry: #145c49;
+    --locked-bg: #dce7df;
+    --locked-text: #273d30;
+    --hint-bg: #fff0c9;
+    --hint-text: #604609;
+    --danger-bg: #fde3df;
+    --danger-text: #81251f;
+    --danger-line: #b8322a;
+    --success-text: #176143;
+    --focus: #b84f1f;
+    --shadow: 0 12px 32px rgb(35 60 44 / 9%);
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #141b17;
+    --surface: #202b24;
+    --surface-muted: #2b3930;
+    --box-shade: #26342b;
+    --text: #f0f5ef;
+    --muted: #c0cec3;
+    --line: #68796d;
+    --line-strong: #c0d0c3;
+    --accent: #8bd4b0;
+    --accent-hover: #a5e5c4;
+    --accent-text: #10271c;
+    --player-entry: #d1f3df;
+    --locked-bg: #34453a;
+    --locked-text: #f0f5ef;
+    --hint-bg: #57491f;
+    --hint-text: #ffe59d;
+    --danger-bg: #542d2b;
+    --danger-text: #ffc0b6;
+    --danger-line: #ff9587;
+    --success-text: #9ee1b9;
+    --focus: #ffc18a;
+    --shadow: 0 14px 36px rgb(0 0 0 / 28%);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    text-align: center;
     margin: 0;
-    padding: 0;
+    padding: 26px 0 40px;
+    background: radial-gradient(ellipse at 50% 0%, var(--surface-muted), var(--page) 58%);
+    color: var(--text);
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    line-height: 1.45;
+}
+
+.app-shell {
+    width: min(760px, calc(100% - 32px));
+    margin: 0 auto;
+}
+
+.app-header {
+    margin-bottom: 10px;
+}
+
+.heading-row,
+.game-meta,
+.timer-display,
+.player-field,
+.difficulty-field {
+    display: flex;
+    align-items: center;
+}
+
+.heading-row {
+    justify-content: space-between;
+    gap: 16px;
 }
 
 h1 {
-    margin-top: 30px;
-    color: #333;
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.2;
 }
 
-#sudoku-board {
-    display: inline-block;
-    margin: 30px auto;
-    border: 4px solid #333;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.game-meta {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px 34px;
+    margin-top: 18px;
 }
 
-.sudoku-row {
-    display: flex;
+.timer-display {
+    justify-content: center;
+    gap: 10px;
+    color: var(--muted);
 }
 
-.sudoku-cell {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #bbb;
-    text-align: center;
-    font-size: 20px;
-    outline: none;
-    background: #fafafa;
-    transition: background 0.2s;
+#timer {
+    min-width: 5ch;
+    color: var(--text);
+    font-size: 24px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
 }
 
-.sudoku-cell:focus {
-    background: #e0f7fa;
+.player-field,
+.difficulty-field {
+    gap: 9px;
 }
 
-.sudoku-cell.prefilled {
-    background: #e0e0e0;
-    font-weight: bold;
-    color: #333;
+label {
+    color: var(--muted);
+    font-weight: 600;
 }
 
-.sudoku-cell.incorrect {
-    background: #ffcdd2;
+input,
+select,
+button {
+    min-height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    font: inherit;
 }
 
-.sudoku-cell:nth-child(3),
-.sudoku-cell:nth-child(6) {
-    border-right: 3px solid #333;
+.player-field input,
+select {
+    padding: 8px 10px;
+    background: var(--surface);
+    color: var(--text);
 }
 
-.sudoku-row:nth-child(3) .sudoku-cell,
-.sudoku-row:nth-child(6) .sudoku-cell {
-    border-bottom: 3px solid #333;
-}
-
-.controls {
-    margin: 20px auto;
+.player-field input {
+    width: 180px;
 }
 
 button {
-    padding: 8px 18px;
-    margin: 0 8px;
-    font-size: 16px;
-    border: none;
-    background: #1976d2;
-    color: #fff;
-    border-radius: 4px;
+    padding: 8px 15px;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background-color 150ms ease, border-color 150ms ease;
 }
 
-button:hover {
-    background: #1565c0;
+button:hover:not(:disabled) {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.theme-toggle {
+    flex: 0 0 auto;
+    background: var(--surface);
+    border-color: var(--line);
+    color: var(--text);
+}
+
+.theme-toggle:hover:not(:disabled) {
+    background: var(--surface-muted);
+    border-color: var(--line-strong);
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+}
+
+#sudoku-board {
+    display: grid;
+    grid-template-rows: repeat(9, minmax(0, 1fr));
+    width: min(100%, 560px);
+    aspect-ratio: 1;
+    margin: 24px auto 18px;
+    overflow: hidden;
+    border: 3px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.sudoku-row {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    min-height: 0;
+}
+
+.sudoku-cell {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: var(--surface);
+    color: var(--player-entry);
+    font-size: clamp(16px, 4vw, 24px);
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 140ms ease;
+}
+
+.sudoku-cell.box-shade {
+    background: var(--box-shade);
+}
+
+.sudoku-cell:nth-child(3n):not(:last-child) {
+    border-right: 3px solid var(--line-strong);
+}
+
+.sudoku-row:nth-child(3n):not(:last-child) .sudoku-cell {
+    border-bottom: 3px solid var(--line-strong);
+}
+
+.sudoku-cell:disabled {
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+.sudoku-cell.prefilled {
+    background: var(--locked-bg);
+    color: var(--locked-text);
+    font-weight: 800;
+    box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.sudoku-cell.hinted {
+    background: var(--hint-bg);
+    color: var(--hint-text);
+    font-weight: 800;
+    text-decoration: underline dotted 2px;
+    text-underline-offset: 4px;
+}
+
+.sudoku-cell.incorrect {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    text-decoration: underline wavy 2px var(--danger-line);
+    text-underline-offset: 4px;
+    box-shadow: inset 0 0 0 2px var(--danger-line);
+}
+
+.sudoku-cell:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 3px solid var(--focus);
+    outline-offset: -4px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    margin: 0 auto;
+}
+
+#hint-count,
+#message {
+    min-height: 1.5em;
+    color: var(--muted);
+    font-size: 14px;
 }
 
 #message {
-    margin-left: 20px;
-    font-size: 16px;
-    color: #d32f2f;
+    flex-basis: 100%;
+    color: var(--danger-text);
+    font-weight: 600;
+}
+
+#message.success {
+    color: var(--success-text);
+}
+
+.leaderboard {
+    width: 100%;
+    margin: 34px auto 0;
+    text-align: left;
+}
+
+.leaderboard h2 {
+    margin: 0 0 12px;
+    font-size: 21px;
+}
+
+#leaderboard-empty {
+    color: var(--muted);
+}
+
+.leaderboard-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--surface);
+}
+
+.leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+.leaderboard th,
+.leaderboard td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.leaderboard tr:last-child td {
+    border-bottom: 0;
+}
+
+.leaderboard th {
+    background: var(--surface-muted);
+    color: var(--text);
+    font-size: 13px;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 18px;
+    }
+
+    .app-shell {
+        width: calc(100% - 24px);
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .game-meta {
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .player-field {
+        gap: 6px;
+    }
+
+    .player-field input {
+        width: min(38vw, 150px);
+    }
+
+    #sudoku-board {
+        margin-top: 18px;
+    }
+
+    .controls {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .difficulty-field {
+        grid-column: 1 / -1;
+        justify-content: center;
+    }
+
+    .controls button {
+        width: 100%;
+        padding: 8px 6px;
+    }
+
+    #hint-count,
+    #message {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+
+    .leaderboard {
+        margin-top: 28px;
+    }
+
+    .leaderboard th,
+    .leaderboard td {
+        padding: 9px 8px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
 }
